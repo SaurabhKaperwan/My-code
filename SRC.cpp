@@ -2,6 +2,8 @@
 #include<fstream>
 #include<iomanip>
 #include<unistd.h>
+#include<cstdio>
+#include<cstring>
 using namespace std;
 class Student
 {
@@ -58,6 +60,7 @@ int Student :: returnTotal()
 }
 void Student :: getdata()
 {
+	system("clear");
 	cout<<"\nEnter roll number:";
 	cin>>roll;
 	cout<<"\nEnter name of student:";
@@ -88,6 +91,7 @@ void Student :: tabular()
 
 void Student :: showdata()
 {
+	system("clear");
 	cout<<"\nRoll number:"<<roll;
 	cout<<"\nName of student:"<<name;
 	cout<<"\nMarks of Digital Logic:"<<logic;
@@ -134,7 +138,7 @@ void create_student()
 	char opt;
 	Student s;
 	ofstream outfile;
-	outfile.open("student.dat", ios::app);
+	outfile.open("student.dat", ios::app | ios::binary);
 	s.getdata();
 	outfile.write((char*) &s,sizeof(s));
 	outfile.close();
@@ -149,6 +153,10 @@ void create_student()
 	{
 		cout<<"\nExisting from creating student record\n";
 	}
+	cin.ignore();
+	cout<<"Press any to continue\n";
+	getchar();
+	system("clear");
 }
 void AccGrade(char grade)
 {
@@ -156,7 +164,7 @@ void AccGrade(char grade)
 	Student s;
 	int c=0;
 	ifstream infile;
-	infile.open("student.dat");
+	infile.open("student.dat",ios::binary);
 	cout<<"Students of grade:"<<grade<<endl;
 	cout<<"===========================================================================================\n";
 	cout<<"R.No       Name        Dig. Logic   DSA   Math   OOPS    Grade   Percentage   Total"<<endl;
@@ -174,18 +182,24 @@ void AccGrade(char grade)
 		sleep(2);
 		cout<<"\n\n\n\t\t\t\tOOPS Nothing Found\n";
 	}
+	cin.ignore();
+	cout<<"Press any to continue\n";
+
+	getchar();
+	system("clear");
 }
 void subject_mean()
 {
+	system("clear");
 	int ctr=0;
 	float oops_mean=0,dsa_mean=0,math_mean=0,logic_mean=0;
 	system("clear");
 	Student s;
 	ifstream infile;
-	infile.open("student.dat");
+	infile.open("student.dat",ios::binary);
 	if(!infile)
 	{
-		cout<<"File could not be open !!!";
+		cout<<"File can't link !!!";
 	}
 	else
 	{
@@ -206,13 +220,18 @@ void subject_mean()
 		cout<<"\nDSA mean:"<<dsa_mean;
 		cout<<"\nDigital Logic mean:"<<logic_mean;
 	}
+	cin.ignore();
+	cout<<"\nPress any to continue\n";
+	getchar();
+	system("clear");
 }
 void class_result()
 {
+	int ch;
 	system("clear");
 	Student s;
 	ifstream inFile;
-	inFile.open("student.dat");
+	inFile.open("student.dat",ios::binary);
 	if(!inFile)
 	{
 		cout<<"File could not be open!!!";
@@ -221,20 +240,67 @@ void class_result()
 	cout<<"===========================================================================================\n";
 	cout<<"R.No       Name        Dig. Logic   DSA   Math   OOPS    Grade   Percentage   Total"<<endl;
 	cout<<"===========================================================================================\n";
-	while(inFile.read((char*) (&s), sizeof(s)))
+	while(inFile.read((char*) &s, sizeof(s)))
 	{
-		
 		s.tabular();		
 	}
 	cout<<"=============================================================================================\n";
 	inFile.close();
+	cin.ignore();
+	cout<<"Press any to continue\n";
+	getchar();
+	system("clear");
+}
+void update_student()
+{
+     Student s;
+     ifstream infile("student.dat");
+     ofstream outfile("new.dat",ios::binary);
+     int roll,flag=0;
+     if(!infile)
+     {
+         cout<<"\nFile not found";
+     }
+     else
+     {   
+         cout<<"\nEnter roll number of the student: ";
+         cin>>roll;
+         system("cls");
+         while(infile.read((char*)&s,sizeof(s)))
+         {
+             if(roll==s.rollnum())
+             {
+                 cout<<"\nEnter new details";
+                 s.getdata();
+                 
+                 outfile.write((char*)&s,sizeof(s));
+                 flag=1;
+             }
+             else
+             { 
+                 outfile.write((char*)&s,sizeof(s));
+             }
+         }
+         if(flag==0)
+         {
+             cout<<"\nRecord not found";
+         }
+     }
+     infile.close();
+     outfile.close();
+     remove("student.dat");
+     rename("new.dat","student.dat");
+     cin.ignore();
+     cout<<"Press any to continue\n";
+	getchar();
+	system("clear");
 }
 void display()
 {
 	system("clear");
 	Student s;
 	ifstream infile;
-	infile.open("student.dat");
+	infile.open("student.dat",ios::binary);
 	if(!infile)
 	{
 		cout<<"File does not exist\n";
@@ -249,6 +315,10 @@ void display()
 		}
 		infile.close();
 	}
+	cin.ignore();
+	cout<<"Press any to continue\n";
+	getchar();
+	system("clear");
 }
 void class_mean()
 {
@@ -258,7 +328,7 @@ void class_mean()
 	float Tmean=0.0;
 	ifstream infile; 
 	Student s;
-	infile.open("student.dat");
+	infile.open("student.dat",ios::binary);
 	if(!infile)
 	{
 		cout<<"File can't link\n";
@@ -273,13 +343,21 @@ void class_mean()
 		Tmean=(float)mean/ctr;
 		cout<<"\nClass mean is:"<<Tmean;
 	}
-}
-void delete_student(int n)
-{
+	cin.ignore();
+	cout<<"Press any to continue\n";
+	getchar();
 	system("clear");
+}
+void delete_student()
+{	
+	int opt;
+	int roll;
+	system("clear");
+	cout<<"Enter roll number:";
+	cin>>roll;
 	Student s;
 	ifstream infile;
-	infile.open("student.dat");
+	infile.open("student.dat",ios::binary);
 	if(!infile)
 	{
 		cout<<"\nFile can't link";
@@ -288,10 +366,9 @@ void delete_student(int n)
 	{
 		ofstream outfile;
 		outfile.open("new.dat",ios::out);
-		infile.seekg(0,ios::beg);
 		while(infile.read((char*) &s,sizeof(s)))
 		{
-			if(s.rollnum() != n)
+			if(s.rollnum() != roll)
 			{
 				outfile.write((char*) &s,sizeof(s));
 			}
@@ -301,14 +378,31 @@ void delete_student(int n)
 		remove("student.dat");
 		rename("new.dat","student.dat");
 		cout<<"\nRecord deleted";
+		cout<<"\nPress y for deleting more data and n for not deleting the data\n";
+		cin>>opt;
+		if(opt=='y' || opt=='Y')
+		{
+			delete_student();
+		}
+		else
+		{
+			cout<<"\nExisting........\n";
+		}
 	}
-}
-void search_disp(int n)
-{
+	cin.ignore();
+	cout<<"Press any to continue\n";
+	getchar();
 	system("clear");
+}
+void search_disp()
+{
+	int roll;
+	system("clear");
+	cout<<"Enter roll number:";
+	cin>>roll;
 	Student s;
 	ifstream infile;
-	infile.open("student.dat");
+	infile.open("student.dat",ios::binary);
 	if(!infile)
 	{
 		cout<<"File does not exist\n";
@@ -318,7 +412,7 @@ void search_disp(int n)
 		int ctr=0;
 		while(infile.read((char*) &s,sizeof(s)))
 		{
-			if(s.rollnum() == n)
+			if(s.rollnum() == roll)
 			{
 				cout<<"\nRecord founded...";
 				cout<<"\n...Press any key to see the record...\n";
@@ -334,73 +428,116 @@ void search_disp(int n)
 			cout<<"\n\nRecord not found\n";
 		}
 	}
+	cin.ignore();
+	cout<<"Press any to continue\n";
+	getchar();
+	system("clear");
 }
+int Password()
+{
+     char pass[8];
+     pass[7]='\0';
+     int t=0;
+     start:
+     system("clear");
+     cout<<"\nEnter the password(7 characters) :";
+     for(int i=0;i<7;++i)
+     {
+             pass[i]=getchar();
+     }
+     if(strcmp(pass,"Saurabh")==0)
+     {
+        cout<<"\nACCESS GRANTED\n";
+        cin.ignore();
+        cout<<"Press any to continue\n";
+		getchar();
+		system("clear");
+        return 1;
+     }
+     else
+     {
+         if(t==2)
+         {
+             cout<<"\nACCESS DENIED";
+             return 0;
+         }
+         cout<<"\nTRY AGAIN\n";
+         ++t;
+         sleep(2);
+         goto start;
+     }
+}
+
 int main()
 {
 	char grade;
 	int opt,num;
 	cout<<"\t\t\t\t\t\t\t\t====================================================================================\n";
 	cout<<"\t\t\t\t\t\t\t\t\t\t\tTHIS IS STUDENT REPORT CARD MANEGEMENT SYSTEM"<<endl;
-	sleep(3);
-	cout<<"\t\t\t\t\t\t\t\t\t\t\t\tMade by:Saurabh Kaperwan"<<endl;
+	sleep(2);
+	cout<<"\n\n\t\t\t\t\t\t\t\t\t\t\tMade by:Saurabh Kaperwan"<<endl;
 	cout<<"\t\t\t\t\t\t\t\t======================================================================================\n";
-	sleep(3);
+	sleep(4);
 	system("clear");
-	do
-	{	
-		cout<<"\n=======================================================================";
-		cout<<"\n0.To exit\n";
-		cout<<"1.To create a record\n";
-		cout<<"2.To delete a record\n";
-		cout<<"3.To read all records from file\n";
-		cout<<"4.To Search a record\n";
-		cout<<"5.Class mean\n";	
-		cout<<"6.Display all students record in tabular form\n";
-		cout<<"7.To show the result of particular grade\n";
-		cout<<"8.All Subject Mean\n";
-		cout<<"=========================================================================\n";
-		sleep(2);
-		cout<<"\nPlese Enter your option:";
-		cin>>opt;
-		switch(opt)
+	if(Password()==1)
+	{
+		do
 		{
-			case 0:
-				cout<<"\nLeaving thank you!!";
-				break;
-			case 1:
-				create_student();
-				break;
-			case 2:
-				cout<<"Enter roll number:";
-				cin>>num;
-				delete_student(num);
-				break;
-			case 3:
-				display();
-				break;
-			case 4:
-				cout<<"Enter roll number:";
-				cin>>num;
-				search_disp(num);
-				break;
-			case 5:
-				class_mean();
-				break;
-			case 6:
-				class_result();
-				break;
-			case 7:
-				cout<<"Enter Grade:";
-				cin>>grade;
-			 	AccGrade(grade);
-			 	break;
-			 case 8:
-			 	subject_mean();
-			 	break;
-			default:
-				cout<<"Invalid choice";
-		}	
-	}while(opt!=0);
+			cout<<"\n These are your option:";
+			cout<<"\n=======================================================================";
+			cout<<"\n0.To exit\n";
+			cout<<"1.To create a record\n";
+			cout<<"2.To delete a record\n";
+			cout<<"3.To read all records from file\n";
+			cout<<"4.To Search a record\n";
+			cout<<"5.Class mean\n";	
+			cout<<"6.Display all students record in tabular form\n";
+			cout<<"7.To show the result of particular grade\n";
+			cout<<"8.All Subject Mean\n";
+			cout<<"9.Modify student record\n";
+			cout<<"=========================================================================\n";
+			sleep(2);
+			cout<<"\nPlese Enter your option:";
+			cin>>opt;
+			switch(opt)
+			{
+				case 0:
+					cout<<"\nLeaving thank you!!\n";
+					break;
+				case 1:
+					create_student();
+					break;
+				case 2:
+					delete_student();
+					break;
+				case 3:
+					display();
+					break;
+				case 4:
+					search_disp();
+					break;
+				case 5:
+					class_mean();
+					break;
+				case 6:
+					class_result();
+					break;
+				case 7:
+					cout<<"Enter Grade:";
+					cin>>grade;
+			 		AccGrade(grade);
+			 		break;
+			 	case 8:
+			 		subject_mean();
+			 		break;
+			 	case 9:
+			 		update_student();
+			 		break;
+				default:
+					cout<<"Invalid choice";
+			}	
+		}while(opt!=0);
+	}
 }
 //setw() helps you defined the width of the output
 //setfill() Fill the rest with the character you want 
