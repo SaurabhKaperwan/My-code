@@ -154,7 +154,7 @@ void create_student()
 		cout<<"\nExisting from creating student record\n";
 	}
 	cin.ignore();
-	cout<<"Press any to continue\n";
+	cout<<"Press any key to continue\n";
 	getchar();
 	system("clear");
 }
@@ -183,7 +183,7 @@ void AccGrade(char grade)
 		cout<<"\n\n\n\t\t\t\tOOPS Nothing Found\n";
 	}
 	cin.ignore();
-	cout<<"Press any to continue\n";
+	cout<<"Press any key to continue\n";
 
 	getchar();
 	system("clear");
@@ -221,7 +221,7 @@ void subject_mean()
 		cout<<"\nDigital Logic mean:"<<logic_mean;
 	}
 	cin.ignore();
-	cout<<"\nPress any to continue\n";
+	cout<<"\nPress any key to continue\n";
 	getchar();
 	system("clear");
 }
@@ -247,7 +247,7 @@ void class_result()
 	cout<<"=============================================================================================\n";
 	inFile.close();
 	cin.ignore();
-	cout<<"Press any to continue\n";
+	cout<<"Press any key to continue\n";
 	getchar();
 	system("clear");
 }
@@ -291,7 +291,7 @@ void update_student()
      remove("student.dat");
      rename("new.dat","student.dat");
      cin.ignore();
-     cout<<"Press any to continue\n";
+     cout<<"Press any key to continue\n";
 	getchar();
 	system("clear");
 }
@@ -316,7 +316,7 @@ void display()
 		infile.close();
 	}
 	cin.ignore();
-	cout<<"Press any to continue\n";
+	cout<<"Press any key to continue\n";
 	getchar();
 	system("clear");
 }
@@ -344,7 +344,7 @@ void class_mean()
 		cout<<"\nClass mean is:"<<Tmean;
 	}
 	cin.ignore();
-	cout<<"Press any to continue\n";
+	cout<<"Press any key to continue\n";
 	getchar();
 	system("clear");
 }
@@ -390,7 +390,7 @@ void delete_student()
 		}
 	}
 	cin.ignore();
-	cout<<"Press any to continue\n";
+	cout<<"Press any key to continue\n";
 	getchar();
 	system("clear");
 }
@@ -429,7 +429,7 @@ void search_disp()
 		}
 	}
 	cin.ignore();
-	cout<<"Press any to continue\n";
+	cout<<"Press any key to continue\n";
 	getchar();
 	system("clear");
 }
@@ -449,7 +449,7 @@ int Password()
      {
         cout<<"\nACCESS GRANTED\n";
         cin.ignore();
-        cout<<"Press any to continue\n";
+        cout<<"Press any key to continue\n";
 		getchar();
 		system("clear");
         return 1;
